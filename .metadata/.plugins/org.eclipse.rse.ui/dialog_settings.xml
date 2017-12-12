@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="RemoteSearchPage">
+		<item value="false" key="includeArchives"/>
+		<item value="false" key="fileNameRegex"/>
+		<item value="false" key="caseSensitive"/>
+		<item value="true" key="includeSubfolders"/>
+		<item value="4" key="dataSize"/>
+		<item value="false" key="stringRegex"/>
+		<item value="true" key="fileNameCaseSensitive"/>
+	</section>
+	<section name="RemoteSearchPage.data3">
+		<item value="ECEB-3022-11" key="profileName"/>
+		<item value="*lab8" key="searchString"/>
+		<item value="false" key="includeArchives"/>
+		<item value="false" key="fileNameRegex"/>
+		<item value="false" key="caseSensitive"/>
+		<item value="true" key="includeSubfolders"/>
+		<item value="false" key="stringRegex"/>
+		<item value="true" key="fileNameCaseSensitive"/>
+		<item value="Local" key="connectionName"/>
+		<item value="C:\Users\adimula2\DuckHunter\software" key="folderName"/>
+		<item value="*" key="fileNames"/>
+	</section>
+	<section name="RemoteSearchPage.data0">
+		<item value="ECEB-3022-11" key="profileName"/>
+		<item value="lab8_sopc.sopcinfo" key="searchString"/>
+		<item value="false" key="includeArchives"/>
+		<item value="false" key="fileNameRegex"/>
+		<item value="false" key="caseSensitive"/>
+		<item value="true" key="includeSubfolders"/>
+		<item value="false" key="stringRegex"/>
+		<item value="true" key="fileNameCaseSensitive"/>
+		<item value="Local" key="connectionName"/>
+		<item value="C:\Users\adimula2\DuckHunter\software" key="folderName"/>
+		<item value="*" key="fileNames"/>
+	</section>
+	<section name="RemoteSearchPage.data2">
+		<item value="ECEB-3022-11" key="profileName"/>
+		<item value="lab8_soc" key="searchString"/>
+		<item value="false" key="includeArchives"/>
+		<item value="false" key="fileNameRegex"/>
+		<item value="false" key="caseSensitive"/>
+		<item value="true" key="includeSubfolders"/>
+		<item value="false" key="stringRegex"/>
+		<item value="true" key="fileNameCaseSensitive"/>
+		<item value="Local" key="connectionName"/>
+		<item value="C:\Users\adimula2\DuckHunter\software" key="folderName"/>
+		<item value="*" key="fileNames"/>
+	</section>
+	<section name="RemoteSearchPage.data1">
+		<item value="ECEB-3022-11" key="profileName"/>
+		<item value="lab8" key="searchString"/>
+		<item value="false" key="includeArchives"/>
+		<item value="false" key="fileNameRegex"/>
+		<item value="false" key="caseSensitive"/>
+		<item value="true" key="includeSubfolders"/>
+		<item value="false" key="stringRegex"/>
+		<item value="true" key="fileNameCaseSensitive"/>
+		<item value="Local" key="connectionName"/>
+		<item value="C:\Users\adimula2\DuckHunter\software" key="folderName"/>
+		<item value="*" key="fileNames"/>
+	</section>
+</section>

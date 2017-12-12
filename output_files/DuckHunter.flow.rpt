@@ -1,0 +1,144 @@
+Flow report for DuckHunter
+Sun Dec 10 20:37:54 2017
+Quartus II 64-Bit Version 15.0.0 Build 145 04/22/2015 SJ Web Edition
+
+
+---------------------
+; Table of Contents ;
+---------------------
+  1. Legal Notice
+  2. Flow Summary
+  3. Flow Settings
+  4. Flow Non-Default Global Settings
+  5. Flow Elapsed Time
+  6. Flow OS Summary
+  7. Flow Log
+  8. Flow Messages
+  9. Flow Suppressed Messages
+
+
+
+----------------
+; Legal Notice ;
+----------------
+Copyright (C) 1991-2015 Altera Corporation. All rights reserved.
+Your use of Altera Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Altera Program License 
+Subscription Agreement, the Altera Quartus II License Agreement,
+the Altera MegaCore Function License Agreement, or other 
+applicable license agreement, including, without limitation, 
+that your use is for the sole purpose of programming logic 
+devices manufactured by Altera and sold by Altera or its 
+authorized distributors.  Please refer to the applicable 
+agreement for further details.
+
+
+
++---------------------------------------------------------------------------------+
+; Flow Summary                                                                    ;
++------------------------------------+--------------------------------------------+
+; Flow Status                        ; Successful - Sun Dec 10 20:37:53 2017      ;
+; Quartus II 64-Bit Version          ; 15.0.0 Build 145 04/22/2015 SJ Web Edition ;
+; Revision Name                      ; DuckHunter                                 ;
+; Top-level Entity Name              ; DuckHunter                                 ;
+; Family                             ; Cyclone IV E                               ;
+; Device                             ; EP4CE115F29C7                              ;
+; Timing Models                      ; Final                                      ;
+; Total logic elements               ; 6,035 / 114,480 ( 5 % )                    ;
+;     Total combinational functions  ; 5,398 / 114,480 ( 5 % )                    ;
+;     Dedicated logic registers      ; 2,171 / 114,480 ( 2 % )                    ;
+; Total registers                    ; 2290                                       ;
+; Total pins                         ; 128 / 529 ( 24 % )                         ;
+; Total virtual pins                 ; 0                                          ;
+; Total memory bits                  ; 11,392 / 3,981,312 ( < 1 % )               ;
+; Embedded Multiplier 9-bit elements ; 4 / 532 ( < 1 % )                          ;
+; Total PLLs                         ; 1 / 4 ( 25 % )                             ;
++------------------------------------+--------------------------------------------+
+
+
++-----------------------------------------+
+; Flow Settings                           ;
++-------------------+---------------------+
+; Option            ; Setting             ;
++-------------------+---------------------+
+; Start date & time ; 12/10/2017 20:33:14 ;
+; Main task         ; Compilation         ;
+; Revision Name     ; DuckHunter          ;
++-------------------+---------------------+
+
+
++------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Flow Non-Default Global Settings                                                                                                                     ;
++-------------------------------------+-------------------------------------------------------------+---------------+-----------------+----------------+
+; Assignment Name                     ; Value                                                       ; Default Value ; Entity Name     ; Section Id     ;
++-------------------------------------+-------------------------------------------------------------+---------------+-----------------+----------------+
+; COMPILER_SIGNATURE_ID               ; 71094329375042.151295959404180                              ; --            ; --              ; --             ;
+; EDA_OUTPUT_DATA_FORMAT              ; Systemverilog Hdl                                           ; --            ; --              ; eda_simulation ;
+; EDA_SIMULATION_TOOL                 ; ModelSim-Altera (SystemVerilog)                             ; <None>        ; --              ; --             ;
+; MAX_CORE_JUNCTION_TEMP              ; 85                                                          ; --            ; --              ; --             ;
+; MIN_CORE_JUNCTION_TEMP              ; 0                                                           ; --            ; --              ; --             ;
+; MISC_FILE                           ; final_soc/synthesis/../final_soc.cmp                        ; --            ; --              ; --             ;
+; MISC_FILE                           ; final_soc/synthesis/../../final_soc.qsys                    ; --            ; --              ; --             ;
+; NOMINAL_CORE_SUPPLY_VOLTAGE         ; 1.2V                                                        ; --            ; --              ; --             ;
+; PARTITION_COLOR                     ; 16764057                                                    ; --            ; DE2_115_Default ; Top            ;
+; PARTITION_COLOR                     ; 16764057                                                    ; --            ; --              ; Top            ;
+; PARTITION_COLOR                     ; 16764057                                                    ; --            ; lab8            ; Top            ;
+; PARTITION_FITTER_PRESERVATION_LEVEL ; PLACEMENT_AND_ROUTING                                       ; --            ; DE2_115_Default ; Top            ;
+; PARTITION_FITTER_PRESERVATION_LEVEL ; PLACEMENT_AND_ROUTING                                       ; --            ; --              ; Top            ;
+; PARTITION_FITTER_PRESERVATION_LEVEL ; PLACEMENT_AND_ROUTING                                       ; --            ; lab8            ; Top            ;
+; PARTITION_NETLIST_TYPE              ; SOURCE                                                      ; --            ; DE2_115_Default ; Top            ;
+; PARTITION_NETLIST_TYPE              ; SOURCE                                                      ; --            ; --              ; Top            ;
+; PARTITION_NETLIST_TYPE              ; SOURCE                                                      ; --            ; lab8            ; Top            ;
+; POWER_BOARD_THERMAL_MODEL           ; None (CONSERVATIVE)                                         ; --            ; --              ; --             ;
+; POWER_PRESET_COOLING_SOLUTION       ; 23 MM HEAT SINK WITH 200 LFPM AIRFLOW                       ; --            ; --              ; --             ;
+; PROJECT_OUTPUT_DIRECTORY            ; output_files                                                ; --            ; --              ; --             ;
+; SLD_FILE                            ; final_soc/synthesis/final_soc.regmap                        ; --            ; --              ; --             ;
+; SLD_FILE                            ; final_soc/synthesis/final_soc.debuginfo                     ; --            ; --              ; --             ;
+; SLD_INFO                            ; QSYS_NAME final_soc HAS_SOPCINFO 1 GENERATION_ID 1512262351 ; --            ; final_soc       ; --             ;
+; SOPCINFO_FILE                       ; final_soc/synthesis/../../final_soc.sopcinfo                ; --            ; --              ; --             ;
+; SYNTHESIS_ONLY_QIP                  ; On                                                          ; --            ; --              ; --             ;
++-------------------------------------+-------------------------------------------------------------+---------------+-----------------+----------------+
+
+
++-------------------------------------------------------------------------------------------------------------------------------+
+; Flow Elapsed Time                                                                                                             ;
++---------------------------+--------------+-------------------------+---------------------+------------------------------------+
+; Module Name               ; Elapsed Time ; Average Processors Used ; Peak Virtual Memory ; Total CPU Time (on all processors) ;
++---------------------------+--------------+-------------------------+---------------------+------------------------------------+
+; Analysis & Synthesis      ; 00:02:50     ; 1.0                     ; 932 MB              ; 00:03:05                           ;
+; Fitter                    ; 00:00:51     ; 1.0                     ; 1336 MB             ; 00:00:33                           ;
+; Assembler                 ; 00:00:09     ; 1.0                     ; 637 MB              ; 00:00:04                           ;
+; TimeQuest Timing Analyzer ; 00:00:14     ; 1.0                     ; 827 MB              ; 00:00:05                           ;
+; EDA Netlist Writer        ; 00:00:10     ; 1.0                     ; 680 MB              ; 00:00:07                           ;
+; Total                     ; 00:04:14     ; --                      ; --                  ; 00:03:54                           ;
++---------------------------+--------------+-------------------------+---------------------+------------------------------------+
+
+
++----------------------------------------------------------------------------------------+
+; Flow OS Summary                                                                        ;
++---------------------------+------------------+-----------+------------+----------------+
+; Module Name               ; Machine Hostname ; OS Name   ; OS Version ; Processor type ;
++---------------------------+------------------+-----------+------------+----------------+
+; Analysis & Synthesis      ; ECEB-3022-01     ; Windows 7 ; 6.1        ; x86_64         ;
+; Fitter                    ; ECEB-3022-01     ; Windows 7 ; 6.1        ; x86_64         ;
+; Assembler                 ; ECEB-3022-01     ; Windows 7 ; 6.1        ; x86_64         ;
+; TimeQuest Timing Analyzer ; ECEB-3022-01     ; Windows 7 ; 6.1        ; x86_64         ;
+; EDA Netlist Writer        ; ECEB-3022-01     ; Windows 7 ; 6.1        ; x86_64         ;
++---------------------------+------------------+-----------+------------+----------------+
+
+
+------------
+; Flow Log ;
+------------
+quartus_map --read_settings_files=on --write_settings_files=off DuckHunter -c DuckHunter
+quartus_fit --read_settings_files=off --write_settings_files=off DuckHunter -c DuckHunter
+quartus_asm --read_settings_files=off --write_settings_files=off DuckHunter -c DuckHunter
+quartus_sta DuckHunter -c DuckHunter
+quartus_eda --read_settings_files=off --write_settings_files=off DuckHunter -c DuckHunter
+
+
+
