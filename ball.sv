@@ -1,5 +1,5 @@
 //-------------------------------------------------------------------------
-//    scope.sv                                                            --
+//    Ball.sv                                                            --
 //    Viral Mehta                                                        --
 //    Spring 2005                                                        --
 //                                                                       --
@@ -14,34 +14,34 @@
 //-------------------------------------------------------------------------
 
 
-module  scope (	input logic [31:0] keycode,
+module  ball (	input logic [31:0] keycode,
 					input         Clk,                // 50 MHz clock
                              Reset,              // Active-high reset signal
                              frame_clk,          // The clock indicating a new frame (~60Hz)
                input [9:0]   DrawX, DrawY,       // Current pixel coordinates
-               output logic  is_scope,             // Whether current pixel belongs to scope or background
-					output logic [9:0] scope_X_Pos, scope_Y_Pos
+               output logic  is_ball,             // Whether current pixel belongs to ball or background
+					output logic [9:0] Ball_X_Pos, Ball_Y_Pos, Ball_Draw_X, Ball_Draw_Y
               );
     
-    parameter [9:0] scope_X_Center=320;  // Center position on the X axis
-    parameter [9:0] scope_Y_Center=240;  // Center position on the Y axis
-    parameter [9:0] scope_X_Min=0;       // Leftmost point on the X axis
-    parameter [9:0] scope_X_Max=639;     // Rightmost point on the X axis
-    parameter [9:0] scope_Y_Min=0;       // Topmost point on the Y axis
-    parameter [9:0] scope_Y_Max=479;     // Bottommost point on the Y axis
-    parameter [9:0] scope_X_Step=20;      // Step size on the X axis
-    parameter [9:0] scope_Y_Step=20;      // Step size on the Y axis
-    parameter [9:0] scope_Size=8;        // scope size
+    parameter [9:0] Ball_X_Center=320;  // Center position on the X axis
+    parameter [9:0] Ball_Y_Center=240;  // Center position on the Y axis
+    parameter [9:0] Ball_X_Min=0;       // Leftmost point on the X axis
+    parameter [9:0] Ball_X_Max=639;     // Rightmost point on the X axis
+    parameter [9:0] Ball_Y_Min=0;       // Topmost point on the Y axis
+    parameter [9:0] Ball_Y_Max=479;     // Bottommost point on the Y axis
+    parameter [9:0] Ball_X_Step=20;      // Step size on the X axis
+    parameter [9:0] Ball_Y_Step=20;      // Step size on the Y axis
+    parameter [9:0] Ball_Size=60;        // Ball size
     
-    logic [9:0] scope_X_Motion, scope_Y_Motion;
-    logic [9:0] scope_X_Pos_in, scope_X_Motion_in, scope_Y_Pos_in, scope_Y_Motion_in;
+    logic [9:0] Ball_X_Motion, Ball_Y_Motion;
+    logic [9:0] Ball_X_Pos_in, Ball_X_Motion_in, Ball_Y_Pos_in, Ball_Y_Motion_in;
     
     /* Since the multiplicants are required to be signed, we have to first cast them
        from logic to int (signed by default) before they are multiplied. */
     int DistX, DistY, Size;
-    assign DistX = DrawX - scope_X_Pos;
-    assign DistY = DrawY - scope_Y_Pos;
-    assign Size = scope_Size;
+    assign DistX = DrawX - Ball_X_Pos;
+    assign DistY = DrawY - Ball_Y_Pos;
+    assign Size = Ball_Size;
 	 
 	 assign w_on = (keycode[31:24] == 8'h1A |
                keycode[23:16] == 8'h1A |
@@ -78,22 +78,22 @@ module  scope (	input logic [31:0] keycode,
         frame_clk_delayed <= frame_clk;
     end
     assign frame_clk_rising_edge = (frame_clk == 1'b1) && (frame_clk_delayed == 1'b0);
-    // Update scope position and motion
+    // Update ball position and motion
     always_ff @ (posedge Clk)
     begin
         if (Reset)
         begin
-            scope_X_Pos <= scope_X_Center;
-            scope_Y_Pos <= scope_Y_Center;
-            //scope_X_Motion <= 10'd0;//10'd0;
-           // scope_Y_Motion <= 10'd0;//scope_Y_Step;
+            Ball_X_Pos <= Ball_X_Center;
+            Ball_Y_Pos <= Ball_Y_Center;
+            //Ball_X_Motion <= 10'd0;//10'd0;
+           // Ball_Y_Motion <= 10'd0;//Ball_Y_Step;
         end
         else if (frame_clk_rising_edge)        // Update only at rising edge of frame clock
         begin
-            scope_X_Pos <= scope_X_Pos_in;
-            scope_Y_Pos <= scope_Y_Pos_in;
-            //scope_X_Motion <= scope_X_Motion_in;
-            //scope_Y_Motion <= scope_Y_Motion_in;
+            Ball_X_Pos <= Ball_X_Pos_in;
+            Ball_Y_Pos <= Ball_Y_Pos_in;
+            //Ball_X_Motion <= Ball_X_Motion_in;
+            //Ball_Y_Motion <= Ball_Y_Motion_in;
         end
         // By defualt, keep the register values.
     end
@@ -106,36 +106,44 @@ module  scope (	input logic [31:0] keycode,
 
 	 if(w_on)
 	 begin
-		 scope_Y_Pos_in = scope_Y_Pos - 10;		
+		 Ball_Y_Pos_in = Ball_Y_Pos - 10;		
 	 end	 	 
 	 else if(s_on)
 	 begin
-		 scope_Y_Pos_in = scope_Y_Pos + 10;		
+		 Ball_Y_Pos_in = Ball_Y_Pos + 10;		
 	 end
 	 else
-		 scope_Y_Pos_in = scope_Y_Pos;
+		 Ball_Y_Pos_in = Ball_Y_Pos;
 
 	 
 	 if(a_on)
 	 begin
-		 scope_X_Pos_in = scope_X_Pos - 10;		
+		 Ball_X_Pos_in = Ball_X_Pos - 10;		
 	 end	 
 	 else if(d_on)
 	 begin
-		 scope_X_Pos_in = scope_X_Pos + 10;		
+		 Ball_X_Pos_in = Ball_X_Pos + 10;		
 	 end
 	 else
-		scope_X_Pos_in = scope_X_Pos;
+		Ball_X_Pos_in = Ball_X_Pos;
 
 	 
 
 	 
 
 
-        if ( ( DistX*DistX + DistY*DistY) <= (Size * Size) ) 
-            is_scope = 1'b1;
+        if ( DistX <= Ball_Size & DistX >= 0  & DistY <= Ball_Size & DistY >= 0) 
+		  begin
+            is_ball = 1'b1;
+				Ball_Draw_X = DrawX - Ball_X_Pos;
+				Ball_Draw_Y = DrawY - Ball_Y_Pos;
+		  end	
         else
-            is_scope = 1'b0;
+		  begin
+            is_ball = 1'b0;
+				Ball_Draw_X = 1'b0;
+				Ball_Draw_Y = 1'b0;
+		  end
         
 
         

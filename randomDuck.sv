@@ -9,7 +9,10 @@ module  randomDuck (
                              frame_clk, is_ball,          // The clock indicating a new frame (~60Hz)
                input [9:0]   DrawX, DrawY, Ball_X_Pos, Ball_Y_Pos,
                output logic  is_duck,             // Whether current pixel belongs to ball or background
-					output logic  [9:0] Duck_Draw_X, Duck_Draw_Y
+					output logic  [9:0] Duck_Draw_X, Duck_Draw_Y,
+					output logic [7:0] score,
+					output logic [3:0] lives
+
               );
     
 
@@ -43,6 +46,11 @@ module  randomDuck (
 								keycode[23:16] == 8'h2c |
 								keycode[15: 8] == 8'h2c |
 								keycode[ 7: 0] == 8'h2c);
+	
+	 assign escape_on = (keycode[31:24] == 8'h29 |
+								keycode[23:16] == 8'h29 |
+								keycode[15: 8] == 8'h29 |
+								keycode[ 7: 0] == 8'h29);
 	 
 	 
 	 
@@ -60,9 +68,10 @@ module  randomDuck (
 	 logic [8:0] count_max = 1;
     logic [8:0] count_min_in;
 	 logic [8:0] count_max_in;
-	 logic [8:0] Duck_X_Min = 50;
+	 logic [8:0] Duck_X_Min = 100;
 	 logic [8:0] Duck_X_Max = 350;
-	 logic [8:0] Duck_X_Min_in, Duck_X_Max_in;
+
+	 //logic [8:0] Duck_X_Min_in, Duck_X_Max_in;
     
     //////// Do not modify the always_ff blocks. ////////
     // Detect rising edge of frame_clk
@@ -75,12 +84,16 @@ module  randomDuck (
     // Update ball position and motion
     always_ff @ (posedge Clk)
     begin
-        if (Reset)
+        if (escape_on | lives == 0)
         begin
-            Duck_X_Pos <= 500;
-            Duck_Y_Pos <= Duck_Y_Center;
-            //Ball_X_Motion <= 10'd0;//10'd0;
-           // Ball_Y_Motion <= 10'd0;//Ball_Y_Step;
+            Duck_X_Pos <= 320;
+            Duck_Y_Pos <= 429;
+				Duck_X_Motion <= 1;
+            Duck_Y_Motion <= -1;
+				count_min <= 1;
+				count_max <= 1;
+				score <= 0;
+				lives <= 5;
         end
         else if (frame_clk_rising_edge)        // Update only at rising edge of frame clock
         begin
@@ -88,10 +101,20 @@ module  randomDuck (
             Duck_Y_Pos <= Duck_Y_Pos_in;
 				Duck_X_Motion <= Duck_X_Motion_in;
             Duck_Y_Motion <= Duck_Y_Motion_in;
-            count_min <= count_min_in;
-			   count_max <= count_max_in;
-				Duck_X_Min <= Duck_X_Min_in;
-				Duck_X_Max <= Duck_X_Max_in;
+				count_min <= count_min_in;
+				count_max <= count_max_in;
+				
+			if(Duck_Y_Pos > 468 & Duck_Y_Motion > 0)
+				score <= score+1'b1;
+				
+				
+			if(Duck_Y_Pos == 0)	
+			begin
+				lives <= lives-1;
+				score <= score-1'b1;
+			end
+				//Duck_X_Min <= Duck_X_Min_in;
+				//Duck_X_Max <= Duck_X_Max_in;
 				//data <= data_next;
         end
         // By defualt, keep the register values.
@@ -102,32 +125,30 @@ module  randomDuck (
     always_comb
     begin
 				
-	      
-			
 			count_min_in = count_min;
 			count_max_in = count_max;
-			Duck_X_Min_in = Duck_X_Min;
-			Duck_X_Max_in = Duck_X_Max;
+			//Duck_X_Min_in = Duck_X_Min;
+			//Duck_X_Max_in = Duck_X_Max;
+
+
 			
 			//SET THE DUCKS WALLS TO DETERMINE MOTION
 			if(count_min==1)
-				Duck_X_Min_in = xmin1;
-				
-			if(count_min==2)
-				Duck_X_Min_in = xmin2;
-				
-		   if(count_min==3)
-				Duck_X_Min_in = xmin3;
+				Duck_X_Min = 100;		
+			else if(count_min==2)
+				Duck_X_Min = 200;		
+		   else
+				Duck_X_Min = 300;
 	
 
 			if(count_max==1)
-				Duck_X_Max_in = xmax1;
-				
-			if(count_max==2)
-				Duck_X_Max_in = xmax2;
-				
-		   if(count_max==3) 
-				Duck_X_Max_in = xmax3;
+				Duck_X_Max = 200;	
+			else if(count_max==2)
+				Duck_X_Max = 360;	
+			else if(count_max==3)
+				Duck_X_Max = 600;	
+		   else
+				Duck_X_Max = 420;
 
 			
 
@@ -142,58 +163,104 @@ module  randomDuck (
 			
 			
 			
-				//CALCULATE MOTION DEPENDING ON BOUNCING OF WALLS
         
 
 			//DETERMINE COLLISION WITH TOP AND BOTTOM OF SCREEN
 			
 			if (Duck_Y_Pos + Duck_SizeY <= Duck_Y_Min  )  // duck as the top, go back to the bottom
-            Duck_Y_Pos_in = 469;
-				
-			if (Duck_Y_Pos >= Duck_Y_Max & Duck_Y_Motion > 0 )  // duck is at the bottom and is moving downward, stop moving and move to different location
 			begin
-            Duck_Y_Pos_in = 469;
-				Duck_Y_Motion_in = -1;
+            Duck_Y_Pos_in = 468;		
+
+			end
+			else if (Duck_Y_Pos > 468 & Duck_Y_Motion > 0 )  // duck is at the bottom and is moving downward, stop moving and move to different location
+			begin
+            Duck_Y_Pos_in = 468;
 				
 
-					
-			   if(count_min==1)
-				   count_min_in=2;
-					
-			   if(count_min==2)		
-					count_min_in=3;
-					
-				if(count_min==3)		
-					count_min_in=1;
+				
+				
+				if(score>=12 & score >=0)
+					Duck_Y_Motion_in = -4;
+				else if(score>=8 & score >=0)
+					Duck_Y_Motion_in = -3;
+				else if(score>=4 & score >=0)
+					Duck_Y_Motion_in = -2;	
+				else 
+					Duck_Y_Motion_in = -1;			
+
+
+	
+			   if(count_min<3)
+						count_min_in = count_min+1;
+				else	
+						count_min_in = 1;
+						
+			   if(count_min<4)
+						count_min_in = count_min+1;
+				else	
+						count_min_in = 1;
 					
 					
 				if(count_max==1)
+				begin
 				   count_max_in=2;
-					
-			   if(count_max==2)		
-					count_max_in=3;	
-					
-				if(count_max==3)		
+					Duck_X_Pos_in = 360;
+				end
+			   else if(count_max==2)	
+				begin
+					count_max_in=3;
+		         Duck_X_Pos_in = 600;			
+				end
+				else if(count_max==3)	
+				begin
+					count_max_in=4;
+		         Duck_X_Pos_in = 420;			
+				end
+				else 
+				begin
 					count_max_in=1;
-					
-	
+		         Duck_X_Pos_in = 200;			
+				end
+				
+
+
 				
 		   end
 			
+				//CALCULATE MOTION DEPENDING ON BOUNCING OF WALLS
 
 			if( Duck_X_Pos >= Duck_X_Max )  // duck right wall bounce
-					Duck_X_Motion_in = -1;  // 2's complement.  
+			begin  	
+					if(score>=12)
+						Duck_X_Motion_in = -4;
+					else if(score>=8)
+						Duck_X_Motion_in = -3;
+					else if(score>=4)
+						Duck_X_Motion_in = -2;	
+					else 
+						Duck_X_Motion_in = -1;	
+			end
 			else if ( Duck_X_Pos <= Duck_X_Min )  // duck left wall bounce
-					Duck_X_Motion_in = 1;
+			begin
+					if(score>=12)
+						Duck_X_Motion_in = 4;
+					else if(score>=8)
+						Duck_X_Motion_in = 3;
+					else if(score>=4)
+						Duck_X_Motion_in = 2;	
+					else 
+						Duck_X_Motion_in = 1;
+			end
 			
 				
 				
 		//COLLISION DETECTION WITH TARGET	
 				
-		if(spacebar_on & (Ball_X_Pos > Duck_X_Pos) & (Ball_X_Pos < Duck_X_Pos + Duck_SizeX) & (Ball_Y_Pos > Duck_Y_Pos) & (Ball_Y_Pos < Duck_Y_Pos + Duck_SizeY))
+		if(spacebar_on & (Ball_X_Pos + 30 > Duck_X_Pos) & (Ball_X_Pos+30 < Duck_X_Pos + Duck_SizeX) & (Ball_Y_Pos+30 > Duck_Y_Pos) & (Ball_Y_Pos+30 < Duck_Y_Pos + Duck_SizeY))
 		begin
 			Duck_X_Motion_in=1'b0;
-			Duck_Y_Motion_in=20;
+			Duck_Y_Motion_in=12;
+
 		end
 		
 		

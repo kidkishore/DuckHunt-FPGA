@@ -16,7 +16,8 @@
 // color_mapper: Decide which color to be output to VGA for each pixel.
 module  color_mapper ( input              is_ball, is_duck,           // Whether current pixel belongs to ball 
                                                               //   or background (computed in ball.sv)
-                       input        [9:0] DrawX, DrawY, Duck_Draw_X, Duck_Draw_Y,      // Current pixel coordinates
+                       input        [9:0] DrawX, DrawY, Duck_Draw_X, Duck_Draw_Y, Ball_Draw_X, Ball_Draw_Y,      // Current pixel coordinates
+							  input logic [3:0] lives,
                        output logic [7:0] VGA_R, VGA_G, VGA_B // VGA RGB output
                      );
     
@@ -28,7 +29,14 @@ module  color_mapper ( input              is_ball, is_duck,           // Whether
     assign VGA_B = Blue;
 	 logic[3:0] back_Out;
 	 logic[3:0] duck_Out;
+	 logic[3:0] scope_Out;
 	 logic[3:0] grass_Out;
+	 logic[3:0] lives_Out;
+	 logic [9:0] Lives_Draw_X, Lives_Draw_Y;
+	 
+	 int DistLivesX, DistLivesY;
+    assign DistLivesX = DrawX - 20;
+    assign DistLivesY = DrawY - 430;
 
 	 
 	 frameROM frame(
@@ -46,13 +54,38 @@ grassROM grass(
 		.read_address(Duck_Draw_X + Duck_Draw_Y*80),
 		.data_Out(duck_Out)
 );
+
+scopeROM thescope(
+		.read_address(Ball_Draw_X + Ball_Draw_Y*60),
+		.data_Out(scope_Out)
+);
+
+livesROM thelives(
+		.read_address((DrawX - 20) + (DrawY - 430)*210),
+		.data_Out(lives_Out)
+);
     
     // Assign color based on is_ball signal
     always_comb
     begin
-        if (is_ball == 1'b1) 
+		  if (DistLivesX <= (55 + 31*lives) & DistLivesX >= 0  & DistLivesY <= 27 & DistLivesY >= 0 & lives_Out!=0) 
         begin
-            // White ball
+            unique case(lives_Out)
+						 4'd1:begin//black
+								  Red = 8'h0;
+								  Green = 8'h0;
+								  Blue = 8'h0;
+								 end
+						 4'd2:begin//yellow
+								  Red = 8'hFF;
+								  Green = 8'hFF;
+								  Blue = 8'h00;
+								 end
+					endcase
+        end
+        else if (is_ball == 1'b1 & scope_Out!=0) 
+        begin
+            // red ball
             Red = 8'hff;
             Green = 8'h00;
             Blue = 8'h00;
@@ -179,6 +212,10 @@ grassROM grass(
 								 end
 						endcase
 					
+					
+					
+					
+	
 				
         end
     end 

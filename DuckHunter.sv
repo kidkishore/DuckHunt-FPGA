@@ -2,7 +2,7 @@
 
 module DuckHunter( input               CLOCK_50,
              input        [3:0]  KEY,          //bit 0 is set up as Reset
-             output logic [6:0]  HEX0, HEX1,
+             output logic [6:0]  HEX0, HEX1, HEX3,
              // VGA Interface 
              output logic [7:0]  VGA_R,        //VGA Red
                                  VGA_G,        //VGA Green
@@ -36,9 +36,11 @@ module DuckHunter( input               CLOCK_50,
     
     logic Reset_h, Clk;
     logic [31:0] keycode;
-	 logic [9:0] DrawX, DrawY, Duck_Draw_X, Duck_Draw_Y, Ball_X_Pos, Ball_Y_Pos;
+	 logic [9:0] DrawX, DrawY, Duck_Draw_X, Duck_Draw_Y, Ball_X_Pos, Ball_Y_Pos, Ball_Draw_X, Ball_Draw_Y;
 	 logic [4:0] randomNo;
 	 logic is_ball, is_duck;
+	 logic [7:0] score;
+	 logic [3:0] lives;
     
 	 
 	 
@@ -130,8 +132,9 @@ module DuckHunter( input               CLOCK_50,
     color_mapper color_instance(.*);
     
     // Display keycode on hex display
-    HexDriver hex_inst_0 (keycode[3:0], HEX0);
-    HexDriver hex_inst_1 (keycode[7:4], HEX1);
+    HexDriver hex_inst_0 (score[3:0], HEX0);
+    HexDriver hex_inst_1 (score[7:4], HEX1);
+	 HexDriver hex_inst_2 (lives, HEX3);
     
     /**************************************************************************************
         ATTENTION! Please answer the following quesiton in your lab report! Points will be allocated for the answers!
