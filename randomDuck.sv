@@ -6,9 +6,9 @@ module  randomDuck (
 					input logic [4:0] randomNo,
 					input         Clk,                // 50 MHz clock
                              Reset,              // Active-high reset signal
-                             frame_clk, is_ball,          // The clock indicating a new frame (~60Hz)
-               input [9:0]   DrawX, DrawY, Ball_X_Pos, Ball_Y_Pos,
-               output logic  is_duck,             // Whether current pixel belongs to ball or background
+                             frame_clk, is_scope,          // The clock indicating a new frame (~60Hz)
+               input [9:0]   DrawX, DrawY, scope_X_Pos, scope_Y_Pos,
+               output logic  is_duck,             // Whether current pixel belongs to scope or background
 					output logic  [9:0] Duck_Draw_X, Duck_Draw_Y,
 					output logic [7:0] score,
 					output logic [3:0] lives
@@ -81,7 +81,7 @@ module  randomDuck (
         frame_clk_delayed <= frame_clk;
     end
     assign frame_clk_rising_edge = (frame_clk == 1'b1) && (frame_clk_delayed == 1'b0);
-    // Update ball position and motion
+    // Update scope position and motion
     always_ff @ (posedge Clk)
     begin
         if (escape_on | lives == 0)
@@ -256,7 +256,7 @@ module  randomDuck (
 				
 		//COLLISION DETECTION WITH TARGET	
 				
-		if(spacebar_on & (Ball_X_Pos + 30 > Duck_X_Pos) & (Ball_X_Pos+30 < Duck_X_Pos + Duck_SizeX) & (Ball_Y_Pos+30 > Duck_Y_Pos) & (Ball_Y_Pos+30 < Duck_Y_Pos + Duck_SizeY))
+		if(spacebar_on & (scope_X_Pos + 30 > Duck_X_Pos) & (scope_X_Pos+30 < Duck_X_Pos + Duck_SizeX) & (scope_Y_Pos+30 > Duck_Y_Pos) & (scope_Y_Pos+30 < Duck_Y_Pos + Duck_SizeY))
 		begin
 			Duck_X_Motion_in=1'b0;
 			Duck_Y_Motion_in=12;
@@ -288,7 +288,7 @@ module  randomDuck (
 //			end
 //	 
 //	
-//        if(counter > 500 )  // Ball is at the bottom edge, BOUNCE!
+//        if(counter > 500 )  // scope is at the bottom edge, BOUNCE!
 //		  begin
 //            Duck_X_Pos_in = data;
 //				counter=0;
@@ -309,46 +309,46 @@ module  randomDuck (
 	 
 	         // Be careful when using comparators with "logic" datatype because compiler treats 
         //   both sides of the operator UNSIGNED numbers. (unless with further type casting)
-        // e.g. Ball_Y_Pos - Ball_Size <= Ball_Y_Min 
-        // If Ball_Y_Pos is 0, then Ball_Y_Pos - Ball_Size will not be -4, but rather a large positive number.
+        // e.g. scope_Y_Pos - scope_Size <= scope_Y_Min 
+        // If scope_Y_Pos is 0, then scope_Y_Pos - scope_Size will not be -4, but rather a large positive number.
 
         
 //	 
 //    if(w_on & a_on)
 //	 begin
-//	 	 Ball_X_Pos_in = Ball_X_Pos - 1'b1;
-//		 Ball_Y_Pos_in = Ball_Y_Pos - 1'b1;		
+//	 	 scope_X_Pos_in = scope_X_Pos - 1'b1;
+//		 scope_Y_Pos_in = scope_Y_Pos - 1'b1;		
 //	 end
 //	 else if(w_on & d_on)
 //	 begin
-//	 	 Ball_X_Pos_in = Ball_X_Pos + 1'b1;
-//		 Ball_Y_Pos_in = Ball_Y_Pos - 1'b1;		
+//	 	 scope_X_Pos_in = scope_X_Pos + 1'b1;
+//		 scope_Y_Pos_in = scope_Y_Pos - 1'b1;		
 //	 end
 //	 else if(s_on & d_on)
 //	 begin
-//	 	 Ball_X_Pos_in = Ball_X_Pos + 1'b1;
-//		 Ball_Y_Pos_in = Ball_Y_Pos + 1'b1;		
+//	 	 scope_X_Pos_in = scope_X_Pos + 1'b1;
+//		 scope_Y_Pos_in = scope_Y_Pos + 1'b1;		
 //	 end
 //	 else if(s_on & a_on)
 //	 begin
-//	 	 Ball_X_Pos_in = Ball_X_Pos - 1'b1;
-//		 Ball_Y_Pos_in = Ball_Y_Pos + 1'b1;		
+//	 	 scope_X_Pos_in = scope_X_Pos - 1'b1;
+//		 scope_Y_Pos_in = scope_Y_Pos + 1'b1;		
 //	 end
 //	 else if(w_on)
 //	 begin
-//		 Ball_Y_Pos_in = Ball_Y_Pos - 1'b1;		
+//		 scope_Y_Pos_in = scope_Y_Pos - 1'b1;		
 //	 end	 
 //	 else if(s_on)
 //	 begin
-//		 Ball_Y_Pos_in = Ball_Y_Pos + 1'b1;		
+//		 scope_Y_Pos_in = scope_Y_Pos + 1'b1;		
 //	 end
 //	 else if(a_on)
 //	 begin
-//		 Ball_X_Pos_in = Ball_X_Pos - 1'b1;		
+//		 scope_X_Pos_in = scope_X_Pos - 1'b1;		
 //	 end	 
 //	 else if(d_on)
 //	 begin
-//		 Ball_X_Pos_in = Ball_X_Pos + 1'b1;		
+//		 scope_X_Pos_in = scope_X_Pos + 1'b1;		
 //	 end
 //	 
 
@@ -360,77 +360,77 @@ module  randomDuck (
 	//		unique case(keycode[15:0])
 //				16'h001A :  // w (up)
 //					begin
-//					  //Ball_X_Motion_in = 10'd0; //clear
-//					  //Ball_Y_Motion_in = (~(Ball_Y_Step) + 1'b1);  // go UP			
-//                 Ball_X_Pos_in = Ball_X_Pos;
-//                 Ball_Y_Pos_in = Ball_Y_Pos - 1'b1; 
+//					  //scope_X_Motion_in = 10'd0; //clear
+//					  //scope_Y_Motion_in = (~(scope_Y_Step) + 1'b1);  // go UP			
+//                 scope_X_Pos_in = scope_X_Pos;
+//                 scope_Y_Pos_in = scope_Y_Pos - 1'b1; 
 //					end
 //				16'h0016:  // s (down)
 //				begin
 //	
-//				  Ball_X_Pos_in = Ball_X_Pos;
-//				  Ball_Y_Pos_in = Ball_Y_Pos + 1'b1; 
+//				  scope_X_Pos_in = scope_X_Pos;
+//				  scope_Y_Pos_in = scope_Y_Pos + 1'b1; 
 //				end
 //				16'h0004:  // a (left)
 //				begin 
 //				  
-//				  Ball_X_Pos_in = Ball_X_Pos - 1'b1;
-//				  Ball_Y_Pos_in = Ball_Y_Pos;
+//				  scope_X_Pos_in = scope_X_Pos - 1'b1;
+//				  scope_Y_Pos_in = scope_Y_Pos;
 //
 //				end
 //				16'h0007:  // d (right)
 //				begin
 //				  
-//			     Ball_X_Pos_in = Ball_X_Pos + 1'b1;
-//			     Ball_Y_Pos_in = Ball_Y_Pos;	  
+//			     scope_X_Pos_in = scope_X_Pos + 1'b1;
+//			     scope_Y_Pos_in = scope_Y_Pos;	  
 //				end
 //				16'h041A :  // (up/left)
 //					begin		
-//                 Ball_X_Pos_in = Ball_X_Pos - 1'b1;
-//                 Ball_Y_Pos_in = Ball_Y_Pos - 1'b1; 
+//                 scope_X_Pos_in = scope_X_Pos - 1'b1;
+//                 scope_Y_Pos_in = scope_Y_Pos - 1'b1; 
 //					end
 //				16'h1A04:  // (left/up)
 //				begin
 //	
-//				  Ball_X_Pos_in = Ball_X_Pos - 1'b1;
-//				  Ball_Y_Pos_in = Ball_Y_Pos - 1'b1; 
+//				  scope_X_Pos_in = scope_X_Pos - 1'b1;
+//				  scope_Y_Pos_in = scope_Y_Pos - 1'b1; 
 //				end
 //				16'h0416:  // (down/left)
 //				begin 
 //				  
-//				  Ball_X_Pos_in = Ball_X_Pos - 1'b1;
-//				  Ball_Y_Pos_in = Ball_Y_Pos + 1'b1;
+//				  scope_X_Pos_in = scope_X_Pos - 1'b1;
+//				  scope_Y_Pos_in = scope_Y_Pos + 1'b1;
 //
 //				end
 //				16'h1604:  // (left/down)
 //				begin
-//			     Ball_X_Pos_in = Ball_X_Pos - 1'b1;
-//			     Ball_Y_Pos_in = Ball_Y_Pos + 1'b1;	  
+//			     scope_X_Pos_in = scope_X_Pos - 1'b1;
+//			     scope_Y_Pos_in = scope_Y_Pos + 1'b1;	  
 //				end
 //				16'h071A :  //  (up/right)
 //					begin			
-//                 Ball_X_Pos_in = Ball_X_Pos + 1'b1;
-//                 Ball_Y_Pos_in = Ball_Y_Pos - 1'b1; 
+//                 scope_X_Pos_in = scope_X_Pos + 1'b1;
+//                 scope_Y_Pos_in = scope_Y_Pos - 1'b1; 
 //					end
 //				16'h1A07:  //  (right/up)
 //				begin
-//				  Ball_X_Pos_in = Ball_X_Pos + 1'b1;
-//				  Ball_Y_Pos_in = Ball_Y_Pos - 1'b1; 
+//				  scope_X_Pos_in = scope_X_Pos + 1'b1;
+//				  scope_Y_Pos_in = scope_Y_Pos - 1'b1; 
 //				end
 //				16'h0716:  //  (down/right)
 //				begin 		  
-//				  Ball_X_Pos_in = Ball_X_Pos + 1'b1;
-//				  Ball_Y_Pos_in = Ball_Y_Pos + 1'b1;
+//				  scope_X_Pos_in = scope_X_Pos + 1'b1;
+//				  scope_Y_Pos_in = scope_Y_Pos + 1'b1;
 //				end
 //				16'h1607:  //  (down/right)
 //				begin
-//			     Ball_X_Pos_in = Ball_X_Pos + 1'b1;
-//			     Ball_Y_Pos_in = Ball_Y_Pos + 1'b1;	  
+//			     scope_X_Pos_in = scope_X_Pos + 1'b1;
+//			     scope_Y_Pos_in = scope_Y_Pos + 1'b1;	  
 //				end
 //				default:
 //				begin
-//	           Ball_X_Pos_in = Ball_X_Pos;
-//			     Ball_Y_Pos_in = Ball_Y_Pos;				 
+//	           scope_X_Pos_in = scope_X_Pos;
+//			     scope_Y_Pos_in = scope_Y_Pos;				 
 //				end
 					
 	//	  endcase
@@ -441,34 +441,34 @@ module  randomDuck (
         
         // Be careful when using comparators with "logic" datatype because compiler treats 
         //   both sides of the operator UNSIGNED numbers. (unless with further type casting)
-        // e.g. Ball_Y_Pos - Ball_Size <= Ball_Y_Min 
-        // If Ball_Y_Pos is 0, then Ball_Y_Pos - Ball_Size will not be -4, but rather a large positive number.
-//        if( Ball_Y_Pos + Ball_Size >= Ball_Y_Max )  // Ball is at the bottom edge, BOUNCE!
-//            Ball_Y_Pos_in = Ball_Y_Pos + Ball_Size;  // 2's complement.  
-//        else if ( Ball_Y_Pos <= Ball_Y_Min + Ball_Size )  // Ball is at the top edge, BOUNCE!
-//            Ball_Y_Pos_in = Ball_Y_Min + Ball_Size;
+        // e.g. scope_Y_Pos - scope_Size <= scope_Y_Min 
+        // If scope_Y_Pos is 0, then scope_Y_Pos - scope_Size will not be -4, but rather a large positive number.
+//        if( scope_Y_Pos + scope_Size >= scope_Y_Max )  // scope is at the bottom edge, BOUNCE!
+//            scope_Y_Pos_in = scope_Y_Pos + scope_Size;  // 2's complement.  
+//        else if ( scope_Y_Pos <= scope_Y_Min + scope_Size )  // scope is at the top edge, BOUNCE!
+//            scope_Y_Pos_in = scope_Y_Min + scope_Size;
 //        
 //        // TODO: Add other boundary conditions and handle keypress here.
-//		  if( Ball_X_Pos + Ball_Size >= Ball_X_Max )  // Ball is at the bottom edge, BOUNCE!
-//            Ball_X_Pos_in = Ball_X_Pos + Ball_Size;  // 2's complement.  
-//        else if ( Ball_X_Pos <= Ball_X_Min + Ball_Size )  // Ball is at the top edge, BOUNCE!
-//            Ball_X_Pos_in = Ball_X_Min + Ball_Size;
+//		  if( scope_X_Pos + scope_Size >= scope_X_Max )  // scope is at the bottom edge, BOUNCE!
+//            scope_X_Pos_in = scope_X_Pos + scope_Size;  // 2's complement.  
+//        else if ( scope_X_Pos <= scope_X_Min + scope_Size )  // scope is at the top edge, BOUNCE!
+//            scope_X_Pos_in = scope_X_Min + scope_Size;
         
     /**************************************************************************************
         ATTENTION! Please answer the following quesiton in your lab report! Points will be allocated for the answers!
         Hidden Question #2/2:
-          Notice that Ball_Y_Pos is updated using Ball_Y_Motion. 
-          Will the new value of Ball_Y_Motion be used when Ball_Y_Pos is updated, or the old? 
+          Notice that scope_Y_Pos is updated using scope_Y_Motion. 
+          Will the new value of scope_Y_Motion be used when scope_Y_Pos is updated, or the old? 
           What is the difference between writing
-            "Ball_Y_Pos_in = Ball_Y_Pos + Ball_Y_Motion;" and 
-            "Ball_Y_Pos_in = Ball_Y_Pos + Ball_Y_Motion_in;"?
-          How will this impact behavior of the ball during a bounce, and how might that interact with a response to a keypress?
+            "scope_Y_Pos_in = scope_Y_Pos + scope_Y_Motion;" and 
+            "scope_Y_Pos_in = scope_Y_Pos + scope_Y_Motion_in;"?
+          How will this impact behavior of the scope during a bounce, and how might that interact with a response to a keypress?
           Give an answer in your Post-Lab.
     **************************************************************************************/
         
-        // Compute whether the pixel corresponds to ball or background
+        // Compute whether the pixel corresponds to scope or background
 
-        /* The ball's (pixelated) circle is generated using the standard circle formula.  Note that while 
+        /* The scope's (pixelated) circle is generated using the standard circle formula.  Note that while 
            the single line is quite powerful descriptively, it causes the synthesis tool to use up three
            of the 12 available multipliers on the chip! */
         

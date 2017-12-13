@@ -14,9 +14,9 @@
 //-------------------------------------------------------------------------
 
 // color_mapper: Decide which color to be output to VGA for each pixel.
-module  color_mapper ( input              is_ball, is_duck,           // Whether current pixel belongs to ball 
-                                                              //   or background (computed in ball.sv)
-                       input        [9:0] DrawX, DrawY, Duck_Draw_X, Duck_Draw_Y, Ball_Draw_X, Ball_Draw_Y,      // Current pixel coordinates
+module  color_mapper ( input              is_scope, is_duck,           // Whether current pixel belongs to scope 
+                                                              //   or background (computed in scope.sv)
+                       input        [9:0] DrawX, DrawY, Duck_Draw_X, Duck_Draw_Y, scope_Draw_X, scope_Draw_Y,      // Current pixel coordinates
 							  input logic [3:0] lives,
                        output logic [7:0] VGA_R, VGA_G, VGA_B // VGA RGB output
                      );
@@ -56,7 +56,7 @@ grassROM grass(
 );
 
 scopeROM thescope(
-		.read_address(Ball_Draw_X + Ball_Draw_Y*60),
+		.read_address(scope_Draw_X + scope_Draw_Y*60),
 		.data_Out(scope_Out)
 );
 
@@ -65,7 +65,7 @@ livesROM thelives(
 		.data_Out(lives_Out)
 );
     
-    // Assign color based on is_ball signal
+    // Assign color based on is_scope signal
     always_comb
     begin
 		  if (DistLivesX <= (55 + 31*lives) & DistLivesX >= 0  & DistLivesY <= 27 & DistLivesY >= 0 & lives_Out!=0) 
@@ -83,9 +83,9 @@ livesROM thelives(
 								 end
 					endcase
         end
-        else if (is_ball == 1'b1 & scope_Out!=0) 
+        else if (is_scope == 1'b1 & scope_Out!=0) 
         begin
-            // red ball
+            // red scope
             Red = 8'hff;
             Green = 8'h00;
             Blue = 8'h00;

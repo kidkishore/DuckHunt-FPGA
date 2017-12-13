@@ -36,9 +36,9 @@ module DuckHunter( input               CLOCK_50,
     
     logic Reset_h, Clk;
     logic [31:0] keycode;
-	 logic [9:0] DrawX, DrawY, Duck_Draw_X, Duck_Draw_Y, Ball_X_Pos, Ball_Y_Pos, Ball_Draw_X, Ball_Draw_Y;
+	 logic [9:0] DrawX, DrawY, Duck_Draw_X, Duck_Draw_Y, scope_X_Pos, scope_Y_Pos, scope_Draw_X, scope_Draw_Y;
 	 logic [4:0] randomNo;
-	 logic is_ball, is_duck;
+	 logic is_scope, is_duck;
 	 logic [7:0] score;
 	 logic [3:0] lives;
     
@@ -120,7 +120,7 @@ module DuckHunter( input               CLOCK_50,
     VGA_controller vga_controller_instance(.Reset(Reset_h),.*);
     
     // Which signal should be frame_clk?
-    ball ball_instance(.Reset(Reset_h),.frame_clk(VGA_VS),.*);
+    scope scope_instance(.Reset(Reset_h),.frame_clk(VGA_VS),.*);
 	 
 	 randomDuck duck_instance(.Reset(Reset_h),.frame_clk(VGA_VS),.*);
 	 
