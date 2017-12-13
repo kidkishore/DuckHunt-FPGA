@@ -4,4 +4,4 @@ Final Project for ECE 385 at the University of Illinois. A take of the classic N
 https://www.youtube.com/watch?v=tvL7VH6HqG0
 
 
-![ScreenShot](screenshot.png)
+![ScreenShot](screenshot.PNG)
